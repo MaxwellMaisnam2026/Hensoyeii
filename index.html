@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>For Hensoyei ❤️</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #ffb6c1, #ffe4e1);
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      overflow: hidden;
+    }
+    .card {
+      text-align: center;
+      background: white;
+      padding: 50px 40px;
+      border-radius: 30px;
+      box-shadow: 0 15px 25px rgba(0,0,0,0.2);
+      position: relative;
+      z-index: 10;
+      animation: pop 1s ease;
+    }
+    @keyframes pop {
+      0% { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    h1 {
+      font-size: 2.5em;
+      color: #ff2d55;
+      margin-bottom: 10px;
+    }
+    p {
+      font-size: 1.3em;
+      margin: 10px 0 30px;
+      color: #444;
+    }
+    button {
+      border: none;
+      padding: 15px 30px;
+      font-size: 1em;
+      margin: 10px;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .yes { background: #ff2d55; color: white; }
+    .yes:hover { background: #ff1e4d; }
+    .no { background: #ddd; }
+    .no:hover { background: #bbb; }
+    .music { background: #ffccff; color: #ff2d55; }
+    .music:hover { background: #ff99cc; }
+    .heart {
+      position: absolute;
+      font-size: 22px;
+      color: #ff2d55;
+      animation: float 6s linear infinite;
+    }
+    @keyframes float {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
+    }
+    #confetti { position: fixed; top:0;left:0;width:100%;height:100%;pointer-events:none; z-index: 20; }
+    audio { display: none; }
+  </style>
+</head>
+<body>
+  <canvas id="confetti"></canvas>
+  <div class="card">
+    <h1>Hensoyei, will you be mine? 💖</h1>
+    <p>Every heartbeat whispers your name 💕✨🌸</p>
+    <button class="yes" onclick="confettiRain()">Yes 🥰🎉</button>
+    <button class="no" id="noBtn">No 😢💔</button>
+    <button class="music" onclick="playMusic()">Play 'Iris' 🎵</button>
+  </div>
+
+  <audio id="irisSong" src="iris.mp3"></audio>
+
+  <script>
+    // floating hearts
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.innerHTML = "💖";
+      heart.style.left = Math.random() * window.innerWidth + "px";
+      heart.style.top = window.innerHeight + "px";
+      heart.style.fontSize = (18 + Math.random()*25) + "px";
+      document.body.appendChild(heart);
+      setTimeout(() => { heart.remove(); }, 6000);
+    }
+    setInterval(createHeart, 400);
+
+    // moving "No" button
+    const noBtn = document.getElementById("noBtn");
+    function moveNoButton(){
+      noBtn.style.position = 'absolute';
+      noBtn.style.left = Math.random()*75 + '%';
+      noBtn.style.top = Math.random()*75 + '%';
+    }
+    noBtn.addEventListener('click', moveNoButton);
+    noBtn.addEventListener('touchstart', moveNoButton);
+
+    // Confetti
+    const confettiCanvas = document.getElementById("confetti");
+    const ctx = confettiCanvas.getContext("2d");
+    confettiCanvas.width = window.innerWidth;
+    confettiCanvas.height = window.innerHeight;
+    const confettis = [];
+    function ConfettiPiece(x, y) {
+      this.x = x; this.y = y;
+      this.color = "hsl(" + Math.random()*360 + ",100%,50%)";
+      this.size = Math.random()*8+4;
+      this.speedY = Math.random()*3+2;
+      this.speedX = Math.random()*2-1;
+    }
+    function confettiRain() {
+      for(let i=0;i<150;i++){
+        confettis.push(new ConfettiPiece(Math.random()*confettiCanvas.width, -10));
+      }
+    }
+    function drawConfetti() {
+      ctx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);
+      for(let i=0;i<confettis.length;i++){
+        let c = confettis[i];
+        ctx.fillStyle = c.color;
+        ctx.fillRect(c.x, c.y, c.size, c.size);
+        c.y += c.speedY;
+        c.x += c.speedX;
+        if(c.y > confettiCanvas.height) confettis.splice(i,1);
+      }
+      requestAnimationFrame(drawConfetti);
+    }
+    drawConfetti();
+
+    // music
+    function playMusic(){
+      const audio = document.getElementById('irisSong');
+      audio.play();
+    }
+  </script>
+</body>
+</html><audio id="irisSong" src="iris.mp3"></audio>
