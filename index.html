@@ -96,18 +96,25 @@
     // moving "No" button
     const noBtn = document.getElementById("noBtn");
     function moveNoButton(){
+      const maxLeft = window.innerWidth - noBtn.offsetWidth;
+      const maxTop = window.innerHeight - noBtn.offsetHeight;
       noBtn.style.position = 'absolute';
-      noBtn.style.left = Math.random()*75 + '%';
-      noBtn.style.top = Math.random()*75 + '%';
+      noBtn.style.left = Math.random() * Math.max(maxLeft, 0) + 'px';
+      noBtn.style.top = Math.random() * Math.max(maxTop, 0) + 'px';
     }
     noBtn.addEventListener('click', moveNoButton);
+    noBtn.addEventListener('mouseover', moveNoButton);
     noBtn.addEventListener('touchstart', moveNoButton);
 
     // Confetti
     const confettiCanvas = document.getElementById("confetti");
     const ctx = confettiCanvas.getContext("2d");
-    confettiCanvas.width = window.innerWidth;
-    confettiCanvas.height = window.innerHeight;
+    function resizeConfettiCanvas() {
+      confettiCanvas.width = window.innerWidth;
+      confettiCanvas.height = window.innerHeight;
+    }
+    resizeConfettiCanvas();
+    window.addEventListener('resize', resizeConfettiCanvas);
     const confettis = [];
     function ConfettiPiece(x, y) {
       this.x = x; this.y = y;
@@ -142,4 +149,4 @@
     }
   </script>
 </body>
-</html><audio id="irisSong" src="iris.mp3"></audio>
+</html>
